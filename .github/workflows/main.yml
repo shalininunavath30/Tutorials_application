@@ -13,6 +13,10 @@ jobs:
       # Checkout Repo
       - name: Checkout repository
         uses: actions/checkout@v3
+        
+      # Go to your project folder (where docker-compose.yml is located)
+      - name: Navigate to project
+        run: cd $GITHUB_WORKSPACE
 
       # Stop and remove existing containers
       - name: Docker Compose Down
