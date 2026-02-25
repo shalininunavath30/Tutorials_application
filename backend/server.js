@@ -1,5 +1,5 @@
 const express = require("express");
-//const cors = require("cors");
+const cors = require("cors");
 
 const app = express();
 
@@ -8,6 +8,14 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+
+const corsOptions = {
+  origin: "http://localhost:4200"
+};
+app.use(cors(corsOptions));
+
+
 
 const db = require("./app/models");
 db.mongoose
@@ -23,10 +31,10 @@ db.mongoose
     process.exit();
   });
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Test application." });
-});
+// // simple route
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome to Test application." });
+// });
 
 require("./app/routes/turorial.routes")(app);
 
