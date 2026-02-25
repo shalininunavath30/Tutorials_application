@@ -42,4 +42,4 @@ jobs:
 
       - name: Run frontend container
         run: |
-          docker run -d -p 4200:80 --name Tutorials frontend:v1
+          docker run -d -p 4200:4200 --name Tutorials frontend:v1
