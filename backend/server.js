@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const corsOptions = {
-  origin: "http://localhost:4200"
+  origin: "http://20.86.128.209:4200"
 };
 app.use(cors(corsOptions));
 
@@ -39,7 +39,7 @@ db.mongoose
 require("./app/routes/turorial.routes")(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
