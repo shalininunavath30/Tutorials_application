@@ -8,30 +8,38 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    
+
     steps:
-      # Checkout code
+      # Checkout Repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Build Backend Docker Image
+      # ---------------- BACKEND ----------------
+      - name: Stop & Remove old backend container
+        run: |
+          docker stop Backend || true
+          docker rm Backend || true
+
       - name: Build backend Docker image
         run: |
           cd backend
           docker build -t tutorial:v1 .
 
-      # Stop & Remove Old Backend Container
-      - name: Restart backend container
+      - name: Run backend container
         run: |
           docker run -d -p 3000:3000 --name Backend tutorial:v1
 
-      # Build Frontend Docker Image
+      # ---------------- FRONTEND ----------------
+      - name: Stop & Remove old frontend container
+        run: |
+          docker stop Tutorials || true
+          docker rm Tutorials || true
+
       - name: Build frontend Docker image
         run: |
           cd frontend
           docker build -t frontend:v1 .
 
-      # Stop & Remove Old Frontend Container
-      - name: Restart frontend container
+      - name: Run frontend container
         run: |
           docker run -d -p 4200:80 --name Tutorials frontend:v1
