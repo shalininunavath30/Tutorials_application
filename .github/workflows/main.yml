@@ -1,0 +1,41 @@
+name: Self-Hosted Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+      # Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Build Backend Docker Image
+      - name: Build backend Docker image
+        run: |
+          cd backend
+          docker build -t backend-app:latest .
+
+      # Stop & Remove Old Backend Container
+      - name: Restart backend container
+        run: |
+          docker stop backend || true
+          docker rm backend || true
+          docker run -d -p 3000:3000 --name backend backend-app:latest
+
+      # Build Frontend Docker Image
+      - name: Build frontend Docker image
+        run: |
+          cd frontend
+          docker build -t frontend-app:latest .
+
+      # Stop & Remove Old Frontend Container
+      - name: Restart frontend container
+        run: |
+          docker stop frontend || true
+          docker rm frontend || true
+          docker run -d -p 4200:80 --name frontend frontend-app:latest
