@@ -14,32 +14,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # ---------------- BACKEND ----------------
-      - name: Stop & Remove old backend container
-        run: |
-          docker stop Backend || true
-          docker rm Backend || true
+      # Stop and remove existing containers
+      - name: Docker Compose Down
+        run: docker-compose down
 
-      - name: Build backend Docker image
-        run: |
-          cd backend
-          docker build -t tutorial:v1 .
+      # Pull latest images & rebuild
+      - name: Docker Compose Build
+        run: docker-compose build
 
-      - name: Run backend container
-        run: |
-          docker run -d -p 3000:3000 --name Backend tutorial:v1
-
-      # ---------------- FRONTEND ----------------
-      - name: Stop & Remove old frontend container
-        run: |
-          docker stop Tutorials || true
-          docker rm Tutorials || true
-
-      - name: Build frontend Docker image
-        run: |
-          cd frontend
-          docker build -t frontend:v1 .
-
-      - name: Run frontend container
-        run: |
-          docker run -d -p 4200:4200 --name Tutorials frontend:v1
+      # Start everything in background
+      - name: Docker Compose Up
+        run: docker-compose up -d
